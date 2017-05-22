@@ -1,0 +1,30 @@
+{
+  "name": "buy-by-bon",
+  "version": "1.0.0",
+  "description": "sample inventory and purchase app",
+  "main": "buy-by-bon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathfour/buy-from-bon.git"
+  },
+  "keywords": [
+    "mysql",
+    "inquirer",
+    "inventory",
+    "amazon"
+  ],
+  "author": "Bon Crowder",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mathfour/buy-from-bon/issues"
+  },
+  "homepage": "https://github.com/mathfour/buy-from-bon#readme",
+  "dependencies": {
+    "console.table": "^0.8.0",
+    "inquirer": "^3.0.6",
+    "mysql": "^2.13.0"
+  }
+}
