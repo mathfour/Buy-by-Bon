@@ -23,9 +23,6 @@ function showCatalog(cbPrompt) {
 
         connection.query("SELECT * FROM products;", function (err, response) {
             console.table(response);
-            // bmc: create an array with only the item id's
-            // var itemIDsAvailable = ["823", "bon", "yup23"];
-            // cbPrompt(itemIDsAvailable);
         });
         connection.query("SELECT * FROM products WHERE quantity > 0;", function (error, response) {
             if (error) {
@@ -36,7 +33,6 @@ function showCatalog(cbPrompt) {
                 var itemsToShow = [];
                 for (var i = 0; i < response.length; i++) {
                     itemsToShow.push(response[i].id);
-                    // + " - " + response[i].name);
                 }
                 cbPrompt(itemsToShow);
             }
@@ -76,11 +72,43 @@ function prompt(items) {
     });
 }
 
-function sellItem(itemID, quantity, cbUpdateInventory) {
+function sellItem(itemID, quantity) {
     console.log("selling", itemID, "at this many", quantity);
-    // bmc: todo calculate amount to be billed (
+    connection.query("SELECT price FROM products WHERE id = ?", itemID, function (error, response) {
+        if (error) {
+            console.log(error);
+        }
+        else {
+            console.log(response[0].price);
+            console.log(quantity);
+            var totalPrice = parseFloat(response[0].price) * parseFloat(quantity);
+            console.log("Your total is $", totalPrice);
+            console.log("Send a check or money order to 1123 Fibonacci Lane, Houston, Texas");
+            console.log("Allow 4-6 weeks for delivery");
+            // bmc: confirm purchase?
+            cbStartOver();
+        }
+        connection.query("SELECT quantity FROM products WHERE id=?", itemID, function (e, r) {
+            if (e) {
+                console.log(e);
+            }
+            else {
+                var newQuantity = parseInt(r[0].quantity) - parseInt(quantity);
+                connection.query("UPDATE products SET quantity=? WHERE id=?", [newQuantity, itemID], function (error, response) {
+                    if (error) {
+                        console.log(error);
+                    }
+                })
+            }
+        })
+    })
+    // bmc: todo then reroute to a StartOver
 }
 
+function cbStartOver() {
+    console.log("starting over");
+    // bmc: prompt for quit or order something else
+}
 
 // bmc: this isn't used right now.
 function checkInventory(item, thisMany) {
@@ -97,5 +125,4 @@ function checkInventory(item, thisMany) {
 }
 
 showCatalog(prompt);
-
 
