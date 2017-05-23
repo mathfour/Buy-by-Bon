@@ -24,6 +24,7 @@
   "homepage": "https://github.com/mathfour/buy-from-bon#readme",
   "dependencies": {
     "cli-table": "^0.3.1",
+    "colors": "^1.1.2",
     "console.table": "^0.8.0",
     "inquirer": "^3.0.6",
     "mysql": "^2.13.0"
