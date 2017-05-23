@@ -6,6 +6,8 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 require("console.table");
 
+// var Table = require('cli-table'); // bmc: constructor
+
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -15,24 +17,30 @@ var connection = mysql.createConnection({
 });
 
 function showCatalog(cbPrompt) {
-    connection.connect(function (error) {
-        if (error) {
-            // throw error;
-            console.log(error);
+    console.log("----------------------------");
+    console.log("Welcome to Buy, by Bon")
+    console.log("----------------------------");
+    console.log("Here is our current catalog:");
+    connection.connect(function (err) {
+        if (err) {
+            console.log(err);
         }
 
-        connection.query("SELECT * FROM products;", function (err, response) {
-            console.table(response);
+        connection.query("SELECT id, name, price FROM products;", function (err, res) {
+            console.table(res);
+            // var catalog = new Table();
+            // catalog.push(res);
+            // console.log(catalog);
         });
-        connection.query("SELECT * FROM products WHERE quantity > 0;", function (error, response) {
-            if (error) {
-                console.log(error);
+        connection.query("SELECT * FROM products WHERE quantity > 0;", function (err, res) {
+            if (err) {
+                console.log(err);
             }
             else {
-                JSON.stringify(response);
+                JSON.stringify(res);
                 var itemsToShow = [];
-                for (var i = 0; i < response.length; i++) {
-                    itemsToShow.push(response[i].id);
+                for (var i = 0; i < res.length; i++) {
+                    itemsToShow.push(res[i].id);
                 }
                 cbPrompt(itemsToShow);
             }
@@ -46,83 +54,91 @@ function prompt(items) {
         {
             type: "list",
             name: "item",
-            message: "Which item would you like to purchase?",
+            message: "Which item would you like to purchase? \n(If the item number is not shown, it's because \n we currently have no inventory.)",
             choices: items
         },
         {
             type: "input",
             name: "quantity",
             message: "How many of these would you like?"
-        }]).then(function (answers) {
+        }]).then(function (a) {
 
-        connection.query("SELECT * FROM products WHERE quantity > ? AND id = ?;", [answers.quantity, answers.item], function (error, response) {
-            if (error) {
-                console.log(error);
+        connection.query("SELECT * FROM products WHERE quantity > ? AND id = ?;", [a.quantity, a.item], function (err, res) {
+            if (err) {
+                console.log(err);
             }
             else {
-                if (response.length > 0) {
-                    console.log("We have enough!");
-                    sellItem(answers.item, answers.quantity);
+                if (res.length > 0) {
+                    console.log("We are happy to complete your order!");
+                    sellItem(a.item, a.quantity);
                 }
                 else {
-                    console.log("awe bummer, there aren't enough!");
+                    console.log("Unfortunately we do not have sufficient inventory to complete" +
+                            " your order");
+                    startOver();
                 }
             }
         });
     });
 }
 
-function sellItem(itemID, quantity) {
-    console.log("selling", itemID, "at this many", quantity);
-    connection.query("SELECT price FROM products WHERE id = ?", itemID, function (error, response) {
-        if (error) {
-            console.log(error);
+function sellItem(itemID, qty) {
+    connection.query("SELECT price FROM products WHERE id = ?", itemID, function (err, res) {
+        if (err) {
+            console.log(err);
         }
         else {
-            console.log(response[0].price);
-            console.log(quantity);
-            var totalPrice = parseFloat(response[0].price) * parseFloat(quantity);
+            var totalPrice = parseFloat(res[0].price) * parseFloat(qty);
             console.log("Your total is $", totalPrice);
             console.log("Send a check or money order to 1123 Fibonacci Lane, Houston, Texas");
             console.log("Allow 4-6 weeks for delivery");
             // bmc: confirm purchase?
-            cbStartOver();
+            inquirer.prompt({
+                type: "confirm",
+                message: "Would you like to complete this order?",
+                name: "confirmOrder",
+                default: "yes"
+            }).then(function (a) {
+                if (a.confirmOrder === false) {
+                    console.log("Your order has been cancelled.");
+                }
+                else {
+                    console.log("Thank you for your order!");
+                    connection.query("SELECT quantity FROM products WHERE id=?", itemID, function (err, res) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            var newQuantity = parseInt(res[0].quantity) - parseInt(qty);
+                            connection.query("UPDATE products SET quantity=? WHERE id=?", [newQuantity, itemID], function (err, res) {
+                                if (err) {
+                                    console.log(err);
+                                }
+                            })
+                        }
+                    })
+                }
+                startOver();
+            });
         }
-        connection.query("SELECT quantity FROM products WHERE id=?", itemID, function (e, r) {
-            if (e) {
-                console.log(e);
-            }
-            else {
-                var newQuantity = parseInt(r[0].quantity) - parseInt(quantity);
-                connection.query("UPDATE products SET quantity=? WHERE id=?", [newQuantity, itemID], function (error, response) {
-                    if (error) {
-                        console.log(error);
-                    }
-                })
-            }
-        })
+
     })
-    // bmc: todo then reroute to a StartOver
 }
 
-function cbStartOver() {
-    console.log("starting over");
-    // bmc: prompt for quit or order something else
-}
-
-// bmc: this isn't used right now.
-function checkInventory(item, thisMany) {
-    connection.query("SELECT * FROM products WHERE quantity > ? AND id = ?;", [thisMany, item], function (error, response) {
-        if (error) {
-            console.log(error);
-            return error;
-            // bmc: not sure what to do here - do I return something else?
+function startOver() {
+    inquirer.prompt({
+        type: "list",
+        message: "Would you like to order something else or quit?",
+        name: "action",
+        choices: ["Order", "Quit"]
+    }).then(function (a) {
+        if (a.action === "Order") {
+            showCatalog(prompt);
         }
-        else {
-            return (response.length > 0);
+        else if (a.action === "Quit") {
+            process.exit();
         }
-    });
+    })
 }
 
 showCatalog(prompt);
-
