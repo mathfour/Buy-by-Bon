@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/mathfour/buy-from-bon#readme",
   "dependencies": {
+    "clear": "0.0.1",
     "cli-table": "^0.3.1",
     "colors": "^1.1.2",
     "console.table": "^0.8.0",

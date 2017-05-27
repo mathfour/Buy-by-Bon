@@ -6,7 +6,7 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 require("console.table");
 var colors = require("colors");
-var clear = require('clear');
+var mod = require("./modules-bbb.js");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -15,29 +15,18 @@ var connection = mysql.createConnection({
     password: "",
     database: "buy_by_bon"
 });
-connection.connect(function (err) {
-    if (err) {
-        console.log(err);
-    }
-});
-function showCatalog(cbPrompt) {
-    clear();
-    console.log("----------------------------".rainbow);
-    console.log("Welcome to Buy, by Bon".blue);
-    console.log("----------------------------".rainbow);
-    console.log("Here is our current catalog:".green);
 
-    connection.query("SELECT id, name, price FROM products;", function (err, res) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            console.table(res);
-        }
-    });
+mod.launchMethod(mod.welcomeMat, "Customer Guy", showCatalog, listItemIDs);
+
+function showCatalog(doNext) {
+    console.log("Here is our current catalog:".green);
+    mod.displayProductList(-1, 'id, name, price', doNext);
+}
+
+function listItemIDs() {
     connection.query("SELECT * FROM products WHERE quantity > 0;", function (err, res) {
         if (err) {
-            console.log(err);
+            throw err;
         }
         else {
             JSON.stringify(res);
@@ -45,7 +34,8 @@ function showCatalog(cbPrompt) {
             for (var i = 0; i < res.length; i++) {
                 itemsToShow.push(res[i].id);
             }
-            cbPrompt(itemsToShow);
+            // bmc: display the actual prompts
+            prompt(itemsToShow);
         }
     })
 }
@@ -64,7 +54,7 @@ function prompt(items) {
             message: "How many of these would you like?"
         }]).then(function (a) {
 
-        connection.query("SELECT * FROM products WHERE quantity >= ? AND id = ?;", [a.quantity, a.item], function (err, res) {
+        connection.query("SELECT * FROM products WHERE quantity > ? AND id = ?;", [a.quantity, a.item], function (err, res) {
             if (err) {
                 console.log(err);
             }
@@ -93,7 +83,7 @@ function sellItem(itemID, qty) {
             console.log("Your total is $", totalPrice);
             console.log("Send a check or money order to 1123 Fibonacci Lane, Houston, Texas".blue);
             console.log("Allow 4-6 weeks for delivery".blue);
-            // bmc: confirm purchase?
+
             inquirer.prompt({
                 type: "confirm",
                 message: "Would you like to complete this order?".green,
@@ -101,25 +91,13 @@ function sellItem(itemID, qty) {
                 default: "yes"
             }).then(function (a) {
                 if (a.confirmOrder === false) {
-                    console.log("Your order has been cancelled.".red);
+                    console.log("Your order has been cancelled.".red, startOver);
                 }
-                else {
+                else if (a.confirmOrder === true) {
                     console.log("Thank you for your order!".rainbow);
-                    connection.query("SELECT quantity FROM products WHERE id=?", itemID, function (err, res) {
-                        if (err) {
-                            console.log(err);
-                        }
-                        else {
-                            var newQuantity = parseInt(res[0].quantity) - parseInt(qty);
-                            connection.query("UPDATE products SET quantity=? WHERE id=?", [newQuantity, itemID], function (err, res) {
-                                if (err) {
-                                    console.log(err);
-                                }
-                            })
-                        }
-                    })
+                    mod.changeInventory(itemID, -qty, startOver);
                 }
-                startOver();
+                // startOver();
             });
         }
 
@@ -142,4 +120,5 @@ function startOver() {
     })
 }
 
-showCatalog(prompt);
+
+

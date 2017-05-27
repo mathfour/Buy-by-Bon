@@ -21,9 +21,9 @@ Once you are in the *Buy, by Bon* repository, run the following code in the comm
 
 - `mysql -u root`
 
-- `source products.sql`
+- `source buy-by-bon.sql`
 
-- `source departments.sql`
+- ~~source departments.sql~~
 
 -  `exit`
 
