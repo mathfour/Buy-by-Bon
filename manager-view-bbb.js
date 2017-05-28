@@ -29,14 +29,14 @@ function promptManager() {
             case "View Catalog of Products":
                 viewCatalog(promptManager);
                 break;
-            case "Run report of low inventory":
+            case "Run Report of Low Inventory":
                 mod.welcomeMat("Manager", lowInventory, promptManager);
                 // mod.doNothing();
                 break;
-            case "Add to the inventory":
+            case "Add to the Inventory":
                 mod.getAvailableItemList('id', 0, mod.promptForItemAndQuantity, mod.changeInventory, promptManager);
                 break;
-            case "Create a new product":
+            case "Create a New Product":
                 console.log("creating a new product");
                 // mod.doNothing();
                 createProduct();
