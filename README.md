@@ -38,7 +38,7 @@ Then use your text editor of choice to update `buy-by-bon.js` and `manager.js` w
 
 - If there isn't sufficient inventory to fulfil the order, the customer is notified.
 
-![not-enough-inventory](not-enough-inventory.png)
+![not-enough-inventory](images/not-enough-inventory.png)
 
 - Customers are shown the total cost and are asked to confirm their purchase. After the purchase, the catalog is updated in the mysql database to reflect new stock quantities.
 

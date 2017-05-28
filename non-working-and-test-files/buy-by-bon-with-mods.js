@@ -6,7 +6,7 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 require("console.table");
 var colors = require("colors");
-var mod = require("./modules-bbb.js");
+var mod = require("../modules-bbb.js");
 
 var connection = mysql.createConnection({
     host: "localhost",
