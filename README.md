@@ -34,7 +34,7 @@ Then use your text editor of choice to update `buy-by-bon.js` and `manager.js` w
 
 - Customers are shown the catalog and may choose a product to purchase by its ID. If a product has no inventory, it **_will_** be shown in the catalog, but **_will not_** come up as an option to purchase.
 
-![choose-item-to-order](choose-item-to-order.png)
+![choose-item-to-order](images/choose-item-to-order.png)
 
 - If there isn't sufficient inventory to fulfil the order, the customer is notified.
 
@@ -42,7 +42,7 @@ Then use your text editor of choice to update `buy-by-bon.js` and `manager.js` w
 
 - Customers are shown the total cost and are asked to confirm their purchase. After the purchase, the catalog is updated in the mysql database to reflect new stock quantities.
 
-![complete-order](complete-order.png)
+![complete-order](images/complete-order.png)
 
 - Regardless of order status, customers are prompted to exit or attempt another purchase.
 
@@ -52,34 +52,34 @@ Then use your text editor of choice to update `buy-by-bon.js` and `manager.js` w
 
 - Managers are give a list of options:
 
-![manager-options](manager-options.png)
+![manager-options](images/manager-options.png)
 
 #### View Catalog of Products
 
 Like the customer app, this shows the full catalog of products - including those that are at zero inventory. Unlike the customer app, though, managers get to view department and inventory. 
 
-![manager-catalog](manager-catalog.png)
+![manager-catalog](images/manager-catalog.png)
 
 #### Run Report of Low Inventory
 
 This option lists items that are designated as "low" in inventory. Currently low is defined as 5 or fewer units in stock.
 
-![low-inventory](low-inventory.png)
+![low-inventory](images/low-inventory.png)
 
 #### Add to the Inventory
 
 A manager may add inventory to any product already in the database with this option.
 
-![add-to-inventory](add-to-inventory.png)
+![add-to-inventory](images/add-to-inventory.png)
 
 The manager will be asked to choose the unique product ID and then prompted for the additional inventory to be added.
 
-![add-to-inventory-confirmation](add-to-inventory-confirmation.png)
+![add-to-inventory-confirmation](images/add-to-inventory-confirmation.png)
 
-![add-to-inventory-before](add-to-inventory-before.png)
+![add-to-inventory-before](images/add-to-inventory-before.png)
 *Before*
 
-![add-to-inventory-after](add-to-inventory-after.png)
+![add-to-inventory-after](images/add-to-inventory-after.png)
 *After*
 
 #### Create a New Product
