@@ -34,38 +34,53 @@ Then use your text editor of choice to update `buy-by-bon.js` and `manager.js` w
 
 - Customers are shown the catalog and may choose a product to purchase by its ID. If a product has no inventory, it **_will_** be shown in the catalog, but **_will not_** come up as an option to purchase.
 
-- Customers are shown the total cost and are asked to confirm their purchase.
+![choose-item-to-order](choose-item-to-order.png)
 
-![cancelled-order](cancelled-order.png)
+- If there isn't sufficient inventory to fulfil the order, the customer is notified.
 
-- After the purchase, the catalog is updated in the mysql database to reflect new stock quantities.
+![not-enough-inventory](not-enough-inventory.png)
 
-- Customers are then prompted to either exit or make another purchase.
+- Customers are shown the total cost and are asked to confirm their purchase. After the purchase, the catalog is updated in the mysql database to reflect new stock quantities.
+
+![complete-order](complete-order.png)
+
+- Regardless of order status, customers are prompted to exit or attempt another purchase.
 
 ## Manager Use
 
 - Run `node manager-view-bbb.js` to start the manager facing *Buy, by Bon* app.
 
 - Managers are give a list of options:
- 
-    - View Catalog of Products 
-    - Run Report of Low Inventory 
-    - Add to the Inventory 
-    - Create a New Product 
-    - Quit
+
+![manager-options](manager-options.png)
 
 #### View Catalog of Products
 
 Like the customer app, this shows the full catalog of products - including those that are at zero inventory. Unlike the customer app, though, managers get to view department and inventory. 
 
+![manager-catalog](manager-catalog.png)
+
 #### Run Report of Low Inventory
 
 This option lists items that are designated as "low" in inventory. Currently low is defined as 5 or fewer units in stock.
 
+![low-inventory](low-inventory.png)
 
 #### Add to the Inventory
 
-A manager may add inventory to any product already in the database with this option. The manager will be asked to choose the unique product ID and then prompted for the additional inventory to be added. 
+A manager may add inventory to any product already in the database with this option.
+
+![add-to-inventory](add-to-inventory.png)
+
+The manager will be asked to choose the unique product ID and then prompted for the additional inventory to be added.
+
+![add-to-inventory-confirmation](add-to-inventory-confirmation.png)
+
+![add-to-inventory-before](add-to-inventory-before.png)
+*Before*
+
+![add-to-inventory-after](add-to-inventory-after.png)
+*After*
 
 #### Create a New Product
 

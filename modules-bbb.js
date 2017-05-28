@@ -18,11 +18,13 @@ var connection = mysql.createConnection({
 // bmc: this is the method that makes the connection and then launches the welcomeThem module with the whomToWelcome parameter (customer, manager, etc.) and with the callback showOptions and secondary callback promptForChoice
 exports.launchMethod = function (welcomeThem, whomToWelcome, showOptions, promptForChoice) {
     connection.connect(function (err) {
-    if (err) {throw err;}
-    else {
-       welcomeThem(whomToWelcome, showOptions, promptForChoice);
-    }
-});
+        if (err) {
+            throw err;
+        }
+        else {
+            welcomeThem(whomToWelcome, showOptions, promptForChoice);
+        }
+    });
 };
 
 // bmc: this method shows the header upon launch or restart of any of the app types
@@ -55,7 +57,20 @@ exports.changeInventory = function (itemID, qty, doLast) {
 
 // bmc: this method will display the desired columns of the inventory list
 exports.displayProductList = function (minQty, columns, doNext) {
-    queryString = 'SELECT '+ columns + ' FROM products WHERE quantity >= ' + minQty + ';';
+    queryString = 'SELECT ' + columns + ' FROM products WHERE quantity >= ' + minQty + ';';
+    connection.query(queryString, function (err, res) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.table(res);
+            doNext();
+        }
+    })
+};
+
+exports.displayLowInventory = function (maxQty, columns, doNext) {
+    queryString = 'SELECT ' + columns + ' FROM products WHERE quantity <= ' + maxQty + ';';
     connection.query(queryString, function (err, res) {
         if (err) {
             console.log(err);
@@ -81,16 +96,18 @@ exports.promptForItemAndQuantity = function (items, doNext, doAfter) {
             name: "quantity",
             message: "How many?"
         }]).then(function (a) {
-            doNext(a.item, a.quantity, doAfter);
-   });
+        doNext(a.item, a.quantity, doAfter);
+    });
 };
 
 // bmc: this method gets the available item list from database (based on column needed and the minQuantity so it can be used for subsequent methods
 exports.getAvailableItemList = function (column, minQuantity, doNext, doAfter, doLast) {
     queryString = 'SELECT ' + column + ' FROM products WHERE quantity >= ' + minQuantity + ';';
 // queryString = '"SELECT * FROM products WHERE quantity >= 0;"'
-        connection.query(queryString, function (err, res) {
-        if (err) {throw err;}
+    connection.query(queryString, function (err, res) {
+        if (err) {
+            throw err;
+        }
         else {
             JSON.stringify(res);
             var itemsToShow = [];
@@ -105,22 +122,20 @@ exports.getAvailableItemList = function (column, minQuantity, doNext, doAfter, d
 };
 
 
-
 exports.saveNewRecord = function (tableName, columnsString, valuesString) {
-   connection.query('INSERT INTO ' + tableName + ' ' + columnsString + ' VALUES ' + valuesString + ';');
-   // bmc: gotta take array of columns and make a columnsString. Likewise for values.
+    connection.query('INSERT INTO ' + tableName + ' ' + columnsString + ' VALUES ' + valuesString + ';');
+    // bmc: gotta take array of columns and make a columnsString. Likewise for values.
 // (id, name, department, price, quantity)
 // ('B00JEYV2NC', 'Bon Bon (Sweetie Drops) My Little Pony Vinyl Figure', 'Toys', 9.39, 7)
 };
 
 
 // bmc: for the supervisor part
-    // (id, name, overhead, sales, profit)
-    // (TOY, Toys, 477, 3892, subtract )
-    // (ENT, Entertainment, 3888, 23883, subtract)
-    // (HHD, Household, 1223, 7836, subtract)
-    // (HDW, Hardware, 837, 5368, subtract)
-
+// (id, name, overhead, sales, profit)
+// (TOY, Toys, 477, 3892, subtract )
+// (ENT, Entertainment, 3888, 23883, subtract)
+// (HHD, Household, 1223, 7836, subtract)
+// (HDW, Hardware, 837, 5368, subtract)
 
 
 // bmc: this is the function I use when I need to just have a placeholder
@@ -131,5 +146,5 @@ exports.doNothing = function () {
 };
 
 exports.sitStill = function () {
-   // bmc: just a function to take up space
+    // bmc: just a function to take up space
 };

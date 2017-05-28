@@ -23,7 +23,7 @@ function promptManager() {
         type: "list",
         message: "What would you like to do?",
         name: "managerChoice",
-        choices: ["View Catalog of Products", "Run report of low inventory", "Add to the inventory", "Create a new product", "Quit"]
+        choices: ["View Catalog of Products", "Run Report of Low Inventory", "Add to the Inventory", "Create a New Product", "Quit"]
     }).then(function (answer) {
         switch (answer.managerChoice) {
             case "View Catalog of Products":
@@ -55,7 +55,7 @@ function viewCatalog(doNext) {
 
 function lowInventory(doNext) {
     console.log("Here is our low inventory:".green);
-    mod.displayProductList(5, '*', doNext);
+    mod.displayLowInventory(5, '*', doNext);
 }
 
 function createProduct() {
