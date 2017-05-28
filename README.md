@@ -84,17 +84,19 @@ The manager will be asked to choose the unique product ID and then prompted for 
 
 #### Create a New Product
 
-This option is still in development. When finished, the manager will be able to input the unique ID, name of the product, price, department and quantity of a new product for the store. This will be added into the database and available for purchase by customers.
+This option is still in development. When finished, the manager's inputs of unique ID, name of the product, price, department and quantity will be added into the database and available for purchase by customers. Right now, the app only takes in the information and parses it in the proper format to be added to the database's table.
+
+![add-a-product](images/add-a-product.png)
 
 ## Next Steps
  
 In addition to completing the manager app (the "Create a New Product" option), the supervisor app can be written. 
 
-## Needed Improvements & Commentatry
+## Needed Improvements & Commentary
 
 I completed the customer app with a serious lack of DRY. So I started the manager app with the idea that I would consolidate many of the methods into the `modules-bbb.js` file. This went well until I attempted to adjust the customer app `buy-by-bon.js` to utilize the export functions. 
 
-I got lost in trying to figure out how much to modularize. Things seemed to be fine until I started trying to work out the variety of callbacks. You can see how messy this got by looking at the file `buy-by-bon-with-mods.js`.
+I got lost in trying to figure out how much to modularize. Things seemed to be fine until I started trying to work out the variety of callbacks. You can see how messy this got by looking at the file `buy-by-bon-with-mods.js` in the `non-working-and-test-files` folder, or click [here](https://github.com/mathfour/buy-by-bon/blob/master/non-working-and-test-files/buy-by-bon-with-mods.js).
 
 ## Acknowledgements 
 
