@@ -102,3 +102,5 @@ I got lost in trying to figure out how much to modularize. Things seemed to be f
 
 A big thanks to the following folks:
 - [Stephanie Orpilla](https://github.com/stephorpilla) whose `README.md` helped me create this one.
+- [Erick Rivas](https://github.com/charmeleon) whose patience with me regarding callback functions is approaching infinity.
+- [Seth Gibson](https://github.com/sgibson53) who considers my questions quietly while I formulate my own answers before he even needs to speak.
