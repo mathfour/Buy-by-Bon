@@ -6,8 +6,6 @@
 
 ## Dependencies
 
-Clone this repo to your desktop and run `npm install` to install its 4 dependencies.
-
 - [mySQL](https://www.npmjs.com/package/mysql): A node.js driver for mysql
 
 - [Colors](https://www.npmjs.com/package/colors): Used to generate colored text in the console 
@@ -18,7 +16,10 @@ Clone this repo to your desktop and run `npm install` to install its 4 dependenc
 - [Clear](https://www.npmjs.com/package/clear): Allows the clearing of the console so things can look less cluttered.
 
 ## Set Up
-Once you are in the *Buy, by Bon* repository/directory, run the following code in the command line to create the *Buy, by Bon* database and the *products* table: `mysql -u root -p < schema.sql`
+
+Clone this repo to your desktop and change to the `buy-by-bon` directory. (If it's your first time to clone, check out the instructions [here](https://help.github.com/articles/cloning-a-repository/). Run `npm install` to install its 4 dependencies.
+
+Then run the following code in the command line to create the *Buy, by Bon* database and the *products* table: `mysql -u root -p < buy-by-bon.sql`
 
 Then use your text editor of choice to update `buy-by-bon.js` and `manager-view-bbb.js` with your mysql password, if you use one.
 

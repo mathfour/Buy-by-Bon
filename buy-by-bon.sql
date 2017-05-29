@@ -25,7 +25,3 @@ INSERT INTO products (id, name, department, price, quantity) VALUES
 ('B00ULQJFAY', 'Bon Bon Rabbit Stuffed Animal', 'Toys', 12.96, 0),
 ('B01A2ODG9A', 'Cindy Bon Shopkins Figure', 'Toys', 5.95, 1);
 
---SELECT * FROM products;
-
---SELECT * FROM products WHERE products.quantity > 0;
-
