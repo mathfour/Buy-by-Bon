@@ -18,15 +18,9 @@ Clone this repo to your desktop and run `npm install` to install its 4 dependenc
 - [Clear](https://www.npmjs.com/package/clear): Allows the clearing of the console so things can look less cluttered.
 
 ## Set Up
-Once you are in the *Buy, by Bon* repository, run the following code in the command line to create the *Buy, by Bon* database and the Products and Departments tables.
+Once you are in the *Buy, by Bon* repository/directory, run the following code in the command line to create the *Buy, by Bon* database and the *products* table: `mysql -u root -p < schema.sql`
 
-- `mysql -u root`
-
-- `source buy-by-bon.sql`
-
--  `exit`
-
-Then use your text editor of choice to update `buy-by-bon.js` and `manager.js` with your mysql password, if you use one.
+Then use your text editor of choice to update `buy-by-bon.js` and `manager-view-bbb.js` with your mysql password, if you use one.
 
 ## Customer Use
 
